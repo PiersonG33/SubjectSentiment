@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
+from requests import subjects_from_article
 
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
 #url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
@@ -43,6 +44,7 @@ def main():
         with open('output.txt', 'w', encoding='utf-8') as f:
             f.write(article)
         print("Text extracted from URL and saved to output.txt")
+    print(subjects_from_article(article))
 
 if __name__ == '__main__':
     main()

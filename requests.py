@@ -1,0 +1,24 @@
+from openai import OpenAI
+
+with open('apikey.txt', 'r') as f:
+    key = f.read().strip()
+client = OpenAI(api_key=key)
+
+def subjects_from_article(article):
+    # Article will be a string of the full text of a news article
+    # GPT should return a list of subjects that the article is about
+    max_subjects = 5
+    prompt = "Extract the {0} most important subjects from the following article. \
+        Display only the subjects, separated by commas.\n{1}".format(max_subjects, article)
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+    subjects = completion.choices[0].message.content
+    return subjects
