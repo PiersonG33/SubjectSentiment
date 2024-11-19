@@ -44,7 +44,9 @@ def main():
         with open('output.txt', 'w', encoding='utf-8') as f:
             f.write(article)
         print("Text extracted from URL and saved to output.txt")
-    print(subjects_from_article(article))
+    subjects = subjects_from_article(article, 5)
+    subjects = [s.strip() for s in subjects.split(',')]
+    print(subjects)
 
 if __name__ == '__main__':
     main()
