@@ -4,7 +4,8 @@ from requests import subjects_from_article
 
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
 url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
-#url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
+url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
+#url = "https://www.yahoo.com/lifestyle/the-15-best-black-friday-deals-on-thanksgiving-day-2024-110031511.html"
 
 def get_text_from_url(url):
     response = urllib.request.urlopen(url)
@@ -22,7 +23,9 @@ def get_text_from_url(url):
         article_body = soup.find('article')
     
     if not article_body:
-        return None
+        article_body = soup.find("div", class_="entry-content")
+        if not article_body:
+            return None
 
     # Remove figcaption tags
     for figcaption in article_body.find_all('figcaption'):
