@@ -1,10 +1,11 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from requests import subjects_from_article
+from sentence_processing import divide_by_subject
 
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
 url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
-url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
+#url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
 #url = "https://www.yahoo.com/lifestyle/the-15-best-black-friday-deals-on-thanksgiving-day-2024-110031511.html"
 
 def get_text_from_url(url):
@@ -54,9 +55,18 @@ def main():
         with open('output.txt', 'w', encoding='utf-8') as f:
             f.write(article)
         print("Text extracted from URL and saved to output.txt")
+    subjects = []
     subjects = subjects_from_article(article, 5)
     subjects = [s.strip() for s in subjects.split(',')]
     print(subjects)
+    subdict = divide_by_subject(article, subjects)
+    #Write to file for debugging
+    # with open('output3.txt', 'w', encoding='utf-8') as f:
+    #     for sub in subdict:
+    #         f.write(sub + ":\n")
+    #         for sentence in subdict[sub]:
+    #             f.write(sentence + "\n")
+    #         f.write("\n")
 
 if __name__ == '__main__':
     main()
