@@ -66,21 +66,44 @@ def custom_split(text):
 def divide_by_subject(article, subjects):
     sentences = custom_split(article)
     subdict = dict()
-    for s in sentences:
+    for i, s in enumerate(sentences):
         for sub in subjects:
             if sub.lower() in s.lower():
+                # Capture the sentence before and after the subject, if possible
+                element = ""
+                if i != 0:
+                    element += sentences[i - 1]
+                    if element[-1].isalnum():
+                                element += ". "
+                element += s
+                if element[-1].isalnum():
+                                element += ". "
+                if i != len(sentences) - 1:
+                    element += " " + sentences[i + 1]
+
                 if sub in subdict:
-                    subdict[sub].append(s)
+                    subdict[sub].append(element)
                 else:
-                    subdict[sub] = [s]
+                    subdict[sub] = [element]
             else:
                 # Check by Levenshtein distance
                 words = [word.strip() for word in s.split()]
                 for word in words:
                     if levenshtein(sub.lower(), word.lower().strip()) <= 2:
+                        element = ""
+                        if i != 0:
+                            element += sentences[i - 1]
+                            if element[-1].isalnum():
+                                element += ". "
+                        element += s
+                        if element[-1].isalnum():
+                                element += ". "
+                        if i != len(sentences) - 1:
+                            element += " " + sentences[i + 1]
+
                         if sub in subdict:
-                            subdict[sub].append(s)
+                            subdict[sub].append(element)
                         else:
-                            subdict[sub] = [s]
+                            subdict[sub] = [element]
                         break
     return subdict
