@@ -2,7 +2,9 @@ import urllib.request
 from bs4 import BeautifulSoup
 from requests import subjects_from_article
 from sentence_processing import divide_by_subject
+import sys
 
+url = ""
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
 url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
 #url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
@@ -47,6 +49,15 @@ def get_text_from_url(url):
     return article
 
 def main():
+    global url
+    if url == "":
+        args = sys.argv
+        if len(args) < 2:
+            url = input("Enter the URL of the article: ").strip()
+        else:
+            url = args[1].strip()
+
+
     article = get_text_from_url(url)
     if article is None:
         print("Could not extract text from URL")
