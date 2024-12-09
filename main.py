@@ -8,8 +8,8 @@ import gensim.downloader as api
 
 url = ""
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
-url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
-#url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
+# url = "https://www.cnn.com/2016/08/02/politics/donald-trump-eats-kfc-knife-fork/index.html"
+# url = "https://dailyhodl.com/2024/11/27/correction-for-bitcoin-in-coming-weeks-could-be-beneficial-for-bull-market-according-to-rekt-capital-heres-why/"
 #url = "https://www.yahoo.com/lifestyle/the-15-best-black-friday-deals-on-thanksgiving-day-2024-110031511.html"
 
 def get_text_from_url(url):
@@ -52,6 +52,7 @@ def get_text_from_url(url):
 
 def main():
     global url
+    url = ""
     if url == "":
         args = sys.argv
         if len(args) < 2:
@@ -69,7 +70,7 @@ def main():
             f.write(article)
         print("Text extracted from URL and saved to output.txt")
     subjects = []
-    subjects = subjects_from_article(article, 5)
+    subjects = subjects_from_article(article, "3")
     subjects = [s.strip() for s in subjects.split(',')]
     print(subjects)
     subdict = divide_by_subject(article, subjects)
