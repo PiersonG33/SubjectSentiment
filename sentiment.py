@@ -77,17 +77,22 @@ def perform_sentiment_analysis(text, model):
     return sentiment_scores
 
 def perform_sentiment_analysis_new(CHATGBTshortText, model):
-    sentiment_scores = []
+    total_sentiment_score = 0
+    counter = 0
 
     for sentence in CHATGBTshortText:
         if sentence.strip():  # Skip empty sentences
             sentiment_score = get_average_sentiment(sentence, model)
-            sentiment_scores.append(sentiment_score)
+            total_sentiment_score += sentiment_score
+            counter += 1
     
-    print("sentiment_scores: ")
-    print(sentiment_scores)
+    print("total_sentiment_scores: ")
+    print(total_sentiment_score)
+
+    print("average_sentiment_score: ")
+    print(total_sentiment_score/counter)
     
-    return sentiment_scores
+    return total_sentiment_score/counter
 
 def plotting(similarity_df):
 # Visualize the similarities
@@ -100,6 +105,23 @@ def plotting(similarity_df):
     plt.xticks(rotation=45)
     plt.savefig('plot.png')
 
+    print(similarity_df)
+    plt.show()
+
+def plotting_new(similarity_df, articleNames):
+    # Ensure similarity_df is a list of values and articleNames is a list of article names
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=articleNames, y=similarity_df, palette='coolwarm')
+    
+    # Customize plot
+    plt.title('Sentiment Analysis')
+    plt.xlabel('Various Articles')
+    plt.ylabel('Polarity')
+    plt.xticks(rotation=45, ha='right')  # Rotate x-ticks for better readability
+    
+    # Save and show the plot
+    plt.tight_layout()  # Adjust layout to avoid overlapping
+    plt.savefig('plot.png')
     print(similarity_df)
     plt.show()
 

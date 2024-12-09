@@ -90,10 +90,10 @@ def main():
     for x in subjects:
         print(x)
         print(subdict[x])
-        sentiment_scores.extend(sentiment.perform_sentiment_analysis_new(subdict[x], model))
+        sentiment_scores.append(sentiment.perform_sentiment_analysis_new(subdict[x], model))
 
     print(sentiment_scores)
-    sentiment.plotting(sentiment_scores)
+    sentiment.plotting_new(sentiment_scores, subjects)
 
 if __name__ == '__main__':
     main()
