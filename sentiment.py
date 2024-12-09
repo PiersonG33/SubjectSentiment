@@ -1,8 +1,5 @@
 import os
-import pandas as pd
 import numpy as np
-from gensim.models import Word2Vec
-from sklearn.metrics.pairwise import cosine_similarity
 from textblob import TextBlob
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -67,6 +64,8 @@ def plotting_new(similarity_df, articleNames):
     # Save and show the plot
     plt.tight_layout()  # Adjust layout to avoid overlapping
     plt.ylim(-1, 1)
+    plt.axhline(y = 0, color = "black", linestyle = '-') 
+    
     plt.savefig('plot.png')
     print(similarity_df)
     plt.show()
