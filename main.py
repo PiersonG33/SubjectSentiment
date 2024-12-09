@@ -70,7 +70,7 @@ def main():
             f.write(article)
         print("Text extracted from URL and saved to output.txt")
     subjects = []
-    subjects = subjects_from_article(article, "3")
+    subjects = subjects_from_article(article, 5)
     subjects = [s.strip() for s in subjects.split(',')]
     print(subjects)
     subdict = divide_by_subject(article, subjects)
