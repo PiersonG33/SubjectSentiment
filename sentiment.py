@@ -6,7 +6,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from textblob import TextBlob
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+from gensim.models import KeyedVectors
+import gensim.downloader as api
 
 def get_average_embedding(words, model):
     embeddings = []
@@ -40,21 +41,29 @@ def model_training_test(text, labels):
 
 def get_average_sentiment(text, model):
     words = text.split()
+    #print(len(model.key_to_index)) 
+
     word_sentiments = []
 
     for word in words:
-        print(word)
-        if word in model.wv.key_to_index:
-            # Calculate sentiment based on polarity using word embeddings
+        #print(word)
+        if word in model.key_to_index:
             print(word)
+            # Calculate sentiment based on polarity using word embeddings
+            #print(word)
             blob = TextBlob(word)  # This can be adjusted to use embeddings directly
             polarity = blob.sentiment.polarity
-            word_sentiments.append(polarity)
+            if(polarity != 0):
+                word_sentiments.append(polarity)
+            print(polarity)
 
+    if (len(word_sentiments) == 0):
+        word_sentiments.append(0)
 
-    print(word_sentiments)
-    
-    return np.mean(word_sentiments) if word_sentiments else 0  # Return average sentiment
+    print("average Sentiment: ")
+    print(np.mean(word_sentiments))
+
+    return np.mean(word_sentiments) 
 
 def perform_sentiment_analysis(text, model):
     sentences = text.split('\n')  # Split the text into sentences
@@ -67,13 +76,26 @@ def perform_sentiment_analysis(text, model):
     
     return sentiment_scores
 
+def perform_sentiment_analysis_new(CHATGBTshortText, model):
+    sentiment_scores = []
+
+    for sentence in CHATGBTshortText:
+        if sentence.strip():  # Skip empty sentences
+            sentiment_score = get_average_sentiment(sentence, model)
+            sentiment_scores.append(sentiment_score)
+    
+    print("sentiment_scores: ")
+    print(sentiment_scores)
+    
+    return sentiment_scores
+
 def plotting(similarity_df):
 # Visualize the similarities
     plt.figure(figsize=(10, 6))
     sns.barplot(x=np.arange(len(similarity_df)), y=similarity_df, palette='coolwarm')
     #sns.barplot(x=similarity_df.index, y='correlation', data=similarity_df.reset_index())
     plt.title('Sentiment Analysis')
-    plt.xlabel('Index')
+    plt.xlabel('Various Articles (needs to be labeled)')
     plt.ylabel('Polarity')
     plt.xticks(rotation=45)
     plt.savefig('plot.png')
@@ -103,10 +125,13 @@ def load_model(text_data=None, modelname=None):
 
 def main():
 
-    print("test")
+    #print("test")
 
-    # put in textdata or modelname to train the model
-    model = load_model()
+    # uhhhhh wrong format
+    #model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
+
+    info = api.info()  # show info about available models/datasets
+    model = api.load("glove-twitter-25")  # download the model and return as object ready for use
 
     file = open("output.txt", 'r')
     text = file.read()

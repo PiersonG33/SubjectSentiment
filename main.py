@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from requests import subjects_from_article
 from sentence_processing import divide_by_subject
 import sys
+import sentiment
+import gensim.downloader as api
 
 url = ""
 url = "https://www.forbes.com/sites/danidiplacido/2024/10/14/pokmon-fans-dont-understand-the-game-freak-leaks/"
@@ -71,13 +73,27 @@ def main():
     subjects = [s.strip() for s in subjects.split(',')]
     print(subjects)
     subdict = divide_by_subject(article, subjects)
+
     #Write to file for debugging
     # with open('output3.txt', 'w', encoding='utf-8') as f:
     #     for sub in subdict:
     #         f.write(sub + ":\n")
     #         for sentence in subdict[sub]:
     #             f.write(sentence + "\n")
-    #         f.write("\n")
+    #         f.write("\n") 
+
+    info = api.info()  # show info about available models/datasets
+    model = api.load("glove-twitter-25")  # download the model and return as object ready for use
+
+    sentiment_scores = []
+
+    for x in subjects:
+        print(x)
+        print(subdict[x])
+        sentiment_scores.extend(sentiment.perform_sentiment_analysis_new(subdict[x], model))
+
+    print(sentiment_scores)
+    sentiment.plotting(sentiment_scores)
 
 if __name__ == '__main__':
     main()
